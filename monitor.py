@@ -330,10 +330,16 @@ def main() -> int:
     parser.add_argument("--test-notify", action="store_true", help="send a test notification")
     args = parser.parse_args()
     if args.test_notify:
+        now = dt.datetime.now(BEIJING_TZ)
+        origin = "GitHub Actions 云端" if os.environ.get("GITHUB_ACTIONS") == "true" else "Mac 本机"
         notify(
-            "🧪 美签提醒器测试",
-            f"监控目标：{CITY} {VISA_TYPE} {DESCRIPTION}\n截止日期：{END_TEXT}",
-            urgent=False,
+            f"🧪 美签提醒器测试 · {origin}",
+            (
+                f"发送时间：{now.strftime('%Y-%m-%d %H:%M:%S')} 北京时间\n"
+                f"监控目标：{CITY} {VISA_TYPE} 普通面谈\n"
+                f"截止日期：{END_TEXT}"
+            ),
+            urgent=True,
         )
         return 0
     if args.watch:
