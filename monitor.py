@@ -29,7 +29,7 @@ from zoneinfo import ZoneInfo
 
 PROJECT_DIR = Path(__file__).resolve().parent
 SOURCE_URL = "https://visabida.com/"
-OFFICIAL_URL = "https://www.ustraveldocs.com/?country=China"
+OFFICIAL_URL = "https://www.usvisascheduling.com/zh-CN/"
 BEIJING_TZ = ZoneInfo("Asia/Shanghai")
 
 
