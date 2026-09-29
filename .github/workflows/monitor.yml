@@ -4,6 +4,15 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Run a normal check or test the notification channel
+        required: true
+        default: check
+        type: choice
+        options:
+          - check
+          - test-notify
 
 concurrency:
   group: visa-slot-monitor
@@ -49,7 +58,13 @@ jobs:
           VISA_SMTP_USER: ${{ secrets.VISA_SMTP_USER }}
           VISA_SMTP_PASSWORD: ${{ secrets.VISA_SMTP_PASSWORD }}
           VISA_STATE: .state/state.json
-        run: python monitor.py --once
+          CHECK_MODE: ${{ github.event.inputs.mode }}
+        run: |
+          if [[ "$CHECK_MODE" == "test-notify" ]]; then
+            python monitor.py --test-notify
+          else
+            python monitor.py --once
+          fi
 
       - name: Save monitor state
         if: always()
